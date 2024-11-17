@@ -1,4 +1,4 @@
-<!-- https:// -->
+<!-- hhttps://github.com/vigan-k/Labb1-->
 
 <!-- - En Content Delivery Network (CDN) är ett nätverk av distribuerade servrar som arbetar tillsammans för att leverera innehåll – såsom bilder, videor, webbsidor och andra digitala tillgångar – till användare på ett effektivt och snabbt sätt. När en användare försöker nå innehåll via en CDN, omdirigeras deras förfrågan till den närmaste servern i nätverket, vilket minskar laddningstiden eftersom innehållet levereras från en server nära användaren.
 
