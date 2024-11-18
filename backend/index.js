@@ -6,12 +6,12 @@ client.connect();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const pool = require("./db");
+// const pool = require("./db");
 const path = require('path');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "dist")));
+// app.use(express.static(path.join(__dirname, "dist")));
 
 
 // CRUD //
@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, "dist")));
 app.post("/planer", async (req, res) => {
   try {
     const {beskrivning} = req.body;
-    const nyaPlaner = await pool.query("INSERT INTO planer (beskrivning) VALUES($1) RETURNING *",[beskrivning]
+    const nyaPlaner = await client.query("INSERT INTO planer (beskrivning) VALUES($1) RETURNING *",[beskrivning]
     );
 
     res.json(nyaPlaner.rows[0]);
@@ -31,7 +31,7 @@ app.post("/planer", async (req, res) => {
 //                       get
 app.get("/planer/", async (req, res) => {
   try {
-    const allaPlaner = await pool.query("SELECT * FROM planer");
+    const allaPlaner = await client.query("SELECT * FROM planer");
     res.json(allaPlaner.rows);
 } catch (error) {
   console.error(error.message);
@@ -42,7 +42,7 @@ app.get("/planer/", async (req, res) => {
 // app.get("/planer/:id", async (req, res) => {
 //   try {
 //     const { id } = req.params;
-//     const planer = await pool.query("SELECT * FROM planer WHERE planer_id = $1", [ id ]);
+//     const planer = await client.query("SELECT * FROM planer WHERE planer_id = $1", [ id ]);
 //     res.json(planer.rows[0]);
 // } catch (error) {
 //   console.error(error.message);
@@ -54,7 +54,7 @@ app.put("/planer/:id", async (req, res) => {
   try {
     const { id } = req.params.id;
     const { beskrivning } = req.body;
-    const updatePlaner = await pool.query("UPDATE planer SET beskrivning = $1 WHERE id = $2", [beskrivning, id]);
+    const updatePlaner = await client.query("UPDATE planer SET beskrivning = $1 WHERE id = $2", [beskrivning, id]);
 
     res.json("Planer har uppdaterats")
   } catch (error) {
@@ -66,16 +66,18 @@ app.put("/planer/:id", async (req, res) => {
 app.delete("/planer/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deletePlaner = await pool.query("DELETE FROM planer WHERE id = $1", [ id ]);
+    const deletePlaner = await client.query("DELETE FROM planer WHERE id = $1", [ id ]);
     res.json("Planer har raderats")
 } catch (error) {
   console.error(error.message);
   }
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// });
+app.use(express.static(path.join(path.resolve(), "dist")));
+
 
 const port = process.env.PORT || 3000;
 
