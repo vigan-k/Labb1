@@ -6,15 +6,13 @@ client.connect();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-// const pool = require("./db");
 const path = require('path');
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.static(path.join(__dirname, "dist")));
 
 
-// CRUD //
+
 //                     create
 app.post("/planer", async (req, res) => {
   try {
@@ -52,10 +50,9 @@ app.get("/planer/", async (req, res) => {
 //                      update
 app.put("/planer/:id", async (req, res) => {
   try {
-    const { id } = req.params.id;
+    const { id } = req.params;
     const { beskrivning } = req.body;
     const updatePlaner = await client.query("UPDATE planer SET beskrivning = $1 WHERE id = $2", [beskrivning, id]);
-
     res.json("Planer har uppdaterats")
   } catch (error) {
     console.error(error.message);
@@ -73,11 +70,7 @@ app.delete("/planer/:id", async (req, res) => {
   }
 });
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
 app.use(express.static(path.join(path.resolve(), "dist")));
-
 
 const port = process.env.PORT || 3000;
 
